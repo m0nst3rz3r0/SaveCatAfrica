@@ -1,20 +1,57 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# SaveCat Africa
 
-# Run and deploy your AI Studio app
+Nonprofit landing site for cat rescue across Africa, with a Convex backend, Stripe donations, and an admin dashboard.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/ef6c71ab-89e1-4ad0-b30b-82f82d444bd3
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
+## Quick start
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+
+   ```bash
+   npm install
+   ```
+
+2. Start Convex and Vite together:
+
+   ```bash
+   npm run dev
+   ```
+
+   On first run, follow the Convex CLI prompts to create/link a project. Copy `VITE_CONVEX_URL` from the generated `.env.local` into your environment.
+
+3. Set Convex dashboard secrets (Settings → Environment Variables):
+
+   - `ADMIN_EMAIL` — admin login email
+   - `ADMIN_PASSWORD` — admin login password
+   - `STRIPE_SECRET_KEY` — Stripe secret key (test mode for development)
+   - `STRIPE_WEBHOOK_SECRET` — from Stripe webhook pointing to your Convex HTTP URL
+
+4. Open [http://localhost:3000/admin](http://localhost:3000/admin), sign in, and click **Seed Database** on the dashboard.
+
+## Stripe webhook
+
+In the Convex dashboard, find your HTTP actions URL and register in Stripe:
+
+```
+https://<your-deployment>.convex.site/stripe-webhook
+```
+
+Event: `checkout.session.completed`
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Convex + Vite dev servers |
+| `npm run build` | Production frontend build |
+| `npm run lint` | TypeScript check |
+
+## Admin routes
+
+- `/admin` — dashboard overview
+- `/admin/settings` — site copy, goals, contact info
+- `/admin/impact` — footer impact stats (empty = hidden)
+- `/admin/mission`, `/admin/protection`, `/admin/tiers` — content CRUD
+- `/admin/donations` — Stripe donation log
+- `/admin/contacts`, `/admin/newsletter` — form submissions
+
+Public CMS pages live at `/p/:slug` (e.g. `/p/team`).
