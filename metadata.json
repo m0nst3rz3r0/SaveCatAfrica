@@ -1,0 +1,6 @@
+{
+  "name": "SaveCat Africa",
+  "description": "A non-profit organization dedicated to protecting domestic cats across Africa through veterinary care, legal reform, and community education.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
