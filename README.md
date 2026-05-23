@@ -55,3 +55,53 @@ Event: `checkout.session.completed`
 - `/admin/contacts`, `/admin/newsletter` — form submissions
 
 Public CMS pages live at `/p/:slug` (e.g. `/p/team`).
+
+## Deploy frontend to Vercel
+
+Vercel hosts the **static React app only**. Convex (database, API, Stripe webhook) stays on [Convex Cloud](https://convex.dev).
+
+### 1. Deploy Convex to production
+
+```bash
+npx convex deploy
+```
+
+Note the **production** deployment URL (e.g. `https://happy-animal-123.convex.cloud`). Set secrets in the Convex dashboard for the **production** deployment:
+
+- `ADMIN_EMAIL`, `ADMIN_PASSWORD`
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+
+Point your Stripe webhook at:
+
+```
+https://<your-prod-deployment>.convex.site/stripe-webhook
+```
+
+### 2. Connect the GitHub repo on Vercel
+
+1. Import [github.com/m0nst3rz3r0/savecat](https://github.com/m0nst3rz3r0/savecat) in the Vercel dashboard.
+2. Framework preset: **Vite** (or use the included `vercel.json`).
+3. Build command: `npm run build`
+4. Output directory: `dist`
+
+### 3. Environment variable on Vercel
+
+| Name | Value |
+|------|--------|
+| `VITE_CONVEX_URL` | Your **production** Convex URL from step 1 |
+
+Redeploy after adding the variable so the build picks it up.
+
+### 4. Custom domain (optional)
+
+Add your domain in Vercel → Settings → Domains. Stripe checkout success/cancel URLs use `window.location.origin`, so they will match your Vercel URL automatically.
+
+### What runs where
+
+| Service | Host |
+|---------|------|
+| React site (`/`, `/admin`, `/p/*`) | Vercel |
+| Database, mutations, admin auth | Convex |
+| Stripe Checkout + webhook | Convex HTTP action |
+
+Local dev still uses `npm run dev` (Convex dev + Vite). Production frontend on Vercel talks to production Convex via `VITE_CONVEX_URL`.
