@@ -10,7 +10,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "convex:deploy": "convex deploy",
+    "convex:seed": "convex run admin:seedDatabase"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",

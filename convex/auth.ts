@@ -60,9 +60,10 @@ export const getSession = query({
   args: { token: v.optional(v.string()) },
   handler: async (ctx, args) => {
     if (!args.token) return null;
+    const token = args.token;
     const session = await ctx.db
       .query("adminSessions")
-      .withIndex("by_token", (q) => q.eq("token", args.token))
+      .withIndex("by_token", (q) => q.eq("token", token))
       .unique();
     if (!session || session.expiresAt < Date.now()) return null;
     return { email: session.email };
@@ -73,9 +74,10 @@ export const isAdmin = query({
   args: { token: v.optional(v.string()) },
   handler: async (ctx, args) => {
     if (!args.token) return false;
+    const token = args.token;
     const session = await ctx.db
       .query("adminSessions")
-      .withIndex("by_token", (q) => q.eq("token", args.token))
+      .withIndex("by_token", (q) => q.eq("token", token))
       .unique();
     return !!session && session.expiresAt > Date.now();
   },
