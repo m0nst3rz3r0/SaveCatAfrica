@@ -4,6 +4,7 @@ import { SeoHead } from "../components/SeoHead";
 import { TrustStrip } from "../components/TrustStrip";
 import { Hero } from "../components/Hero";
 import { CrisisSection } from "../components/CrisisSection";
+import { CampaignsSection } from "../components/CampaignsSection";
 import { ProtectionPlan } from "../components/ProtectionPlan";
 import { RescueStoriesSection } from "../components/RescueStoriesSection";
 import { TestimonialsSection } from "../components/TestimonialsSection";
@@ -26,6 +27,7 @@ export function LandingPage() {
       <main className="flex-grow pb-20 md:pb-0">
         <Hero />
         <CrisisSection />
+        {settings?.showGallery !== false && <CampaignsSection />}
         <ProtectionPlan />
         {settings?.showStories !== false && <RescueStoriesSection />}
         {settings?.showTestimonials !== false && <TestimonialsSection />}

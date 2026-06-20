@@ -29,8 +29,7 @@ export function ProtectionPlan() {
               viewport={{ once: true }}
               className="text-3xl md:text-5xl text-navy font-bold leading-tight"
             >
-              {settings?.protectionTitle ??
-                "Building Resilience for Africa's Felines"}
+              Six Pillars of Protection
             </motion.h2>
           </div>
           <motion.div

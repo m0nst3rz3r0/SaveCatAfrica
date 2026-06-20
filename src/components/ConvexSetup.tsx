@@ -1,4 +1,6 @@
-const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined;
+const convexUrl =
+  (import.meta.env.VITE_CONVEX_URL as string | undefined) ??
+  (import.meta.env.PROD ? "https://wandering-iguana-544.convex.cloud" : undefined);
 
 export function ConvexSetup() {
   if (convexUrl) return null;

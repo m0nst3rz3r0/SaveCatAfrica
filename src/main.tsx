@@ -7,7 +7,12 @@ import "./index.css";
 import { AuthProvider } from "./lib/auth.tsx";
 import { ToastProvider } from "./lib/toast.tsx";
 
-const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined;
+const PRODUCTION_CONVEX_URL = "https://wandering-iguana-544.convex.cloud";
+
+const convexUrl =
+  (import.meta.env.VITE_CONVEX_URL as string | undefined) ??
+  (import.meta.env.PROD ? PRODUCTION_CONVEX_URL : undefined);
+
 const convex = convexUrl ? new ConvexReactClient(convexUrl) : null;
 
 function Root() {

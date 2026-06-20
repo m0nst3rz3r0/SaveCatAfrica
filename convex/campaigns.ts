@@ -1,12 +1,25 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { requireAdmin } from "./lib/auth";
+import type { Id } from "./_generated/dataModel";
+
+async function withImageUrl(
+  ctx: { storage: { getUrl: (id: Id<"_storage">) => Promise<string | null> } },
+  item: { imageStorageId?: Id<"_storage">; imageUrl?: string }
+) {
+  if (item.imageStorageId) {
+    const url = await ctx.storage.getUrl(item.imageStorageId);
+    return { ...item, imageUrl: url ?? item.imageUrl };
+  }
+  return item;
+}
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
     const items = await ctx.db.query("campaigns").collect();
-    return items.filter((c) => c.active).sort((a, b) => a.sortOrder - b.sortOrder);
+    const active = items.filter((c) => c.active).sort((a, b) => a.sortOrder - b.sortOrder);
+    return Promise.all(active.map((c) => withImageUrl(ctx, c)));
   },
 });
 
@@ -14,8 +27,9 @@ export const listAll = query({
   args: { token: v.string() },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);
-    return (await ctx.db.query("campaigns").collect()).sort(
-      (a, b) => a.sortOrder - b.sortOrder
+    const items = await ctx.db.query("campaigns").collect();
+    return Promise.all(
+      items.sort((a, b) => a.sortOrder - b.sortOrder).map((c) => withImageUrl(ctx, c))
     );
   },
 });

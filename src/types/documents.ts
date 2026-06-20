@@ -135,6 +135,19 @@ export type FaqItem = {
   sortOrder: number;
 };
 
+export type Campaign = {
+  _id: Id<"campaigns">;
+  name: string;
+  slug: string;
+  description: string;
+  goalCents: number;
+  imageUrl?: string;
+  imageStorageId?: Id<"_storage">;
+  deadline?: number;
+  active: boolean;
+  sortOrder: number;
+};
+
 export type RecentDonor = {
   amountCents: number;
   donorName: string;

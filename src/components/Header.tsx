@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { Cat, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useFooterLinks } from "../hooks/useSiteData";
 
-const navLinks = [
-  { href: "#mission", label: "Mission" },
-  { href: "#protection", label: "Protection Plan" },
-  { href: "#stories", label: "Stories" },
-  { href: "#impact", label: "Global Impact" },
+const defaultNavLinks = [
+  { href: "#mission", label: "Our Mission" },
+  { href: "#campaigns", label: "Campaigns" },
+  { href: "/p/team", label: "About" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const footerLinks = useFooterLinks();
+  const cmsLinks =
+    footerLinks
+      ?.filter((l) => l.section === "navigation")
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .map((l) => ({ href: l.href, label: l.label })) ?? [];
+  const navLinks = cmsLinks.length > 0 ? cmsLinks : defaultNavLinks;
 
   return (
     <header className="sticky top-0 w-full z-50 bg-white/50 backdrop-blur-md border-b border-border-theme h-20">
@@ -27,15 +34,25 @@ export function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-semibold uppercase tracking-widest text-[10px] text-muted hover:text-terracotta transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="font-semibold uppercase tracking-widest text-[10px] text-muted hover:text-terracotta transition-colors"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                className="font-semibold uppercase tracking-widest text-[10px] text-muted hover:text-terracotta transition-colors"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -43,7 +60,7 @@ export function Header() {
             href="#impact"
             className="hidden sm:inline-flex px-6 py-2.5 bg-navy text-white text-xs font-bold uppercase tracking-widest rounded-full transition-transform hover:scale-105 shadow-md"
           >
-            Take Action
+            Donate Now
           </a>
           <button
             type="button"
@@ -58,16 +75,27 @@ export function Header() {
 
       {open && (
         <nav className="md:hidden bg-white border-t border-border-theme px-4 py-4 space-y-1 shadow-lg">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="block py-3 px-2 font-semibold uppercase tracking-widest text-xs text-navy hover:text-terracotta transition-colors border-b border-border-theme last:border-0"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.href}
+                to={link.href}
+                onClick={() => setOpen(false)}
+                className="block py-3 px-2 font-semibold uppercase tracking-widest text-xs text-navy hover:text-terracotta transition-colors border-b border-border-theme last:border-0"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="block py-3 px-2 font-semibold uppercase tracking-widest text-xs text-navy hover:text-terracotta transition-colors border-b border-border-theme last:border-0"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <a
             href="#impact"
             onClick={() => setOpen(false)}

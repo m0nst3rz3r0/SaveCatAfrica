@@ -6,10 +6,14 @@ import { FormField, inputClass } from "../components/FormField";
 import { ImageUpload } from "../components/ImageUpload";
 import { useToast } from "../../lib/toast";
 import type { Id } from "../../../convex/_generated/dataModel";
+import type { Campaign } from "../../types/documents";
 
 export function CampaignsPage() {
   const { token } = useAdminToken();
-  const campaigns = useQuery(api.campaigns.listAll, token ? { token } : "skip");
+  const campaigns = useQuery(
+    api.campaigns.listAll,
+    token ? { token } : "skip"
+  ) as Campaign[] | undefined;
   const create = useMutation(api.campaigns.create);
   const update = useMutation(api.campaigns.update);
   const remove = useMutation(api.campaigns.remove);

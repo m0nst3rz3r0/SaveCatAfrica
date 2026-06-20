@@ -198,10 +198,11 @@ export const run = internalMutation({
     const linkCount = (await ctx.db.query("footerLinks").collect()).length;
     if (linkCount === 0) {
       const links = [
-        { section: "navigation", label: "Mission", href: "#mission", sortOrder: 0 },
-        { section: "navigation", label: "Impact", href: "#impact", sortOrder: 1 },
-        { section: "navigation", label: "Our Team", href: "/p/team", sortOrder: 2 },
-        { section: "navigation", label: "Reports", href: "/p/reports", sortOrder: 3 },
+        { section: "navigation", label: "Our Mission", href: "#mission", sortOrder: 0 },
+        { section: "navigation", label: "Campaigns", href: "#campaigns", sortOrder: 1 },
+        { section: "navigation", label: "About", href: "/p/team", sortOrder: 2 },
+        { section: "navigation", label: "FAQ", href: "#faq", sortOrder: 3 },
+        { section: "navigation", label: "Contact", href: "#contact", sortOrder: 4 },
         {
           section: "transparency",
           label: "Financials",
@@ -254,6 +255,45 @@ export const run = internalMutation({
         showGallery: true,
         showRecentDonors: true,
       });
+    }
+
+    if ((await ctx.db.query("campaigns").collect()).length === 0) {
+      const campaigns = [
+        {
+          name: "Mobile Vet Clinics",
+          slug: "mobile-clinics",
+          description:
+            "Fund emergency medical care and vaccinations in remote villages across East Africa.",
+          goalCents: 500000,
+          imageUrl:
+            "https://images.unsplash.com/photo-1628009368182-84a9c4a9b2b8?auto=format&fit=crop&q=80&w=800",
+          active: true,
+          sortOrder: 0,
+        },
+        {
+          name: "Sanctuary Expansion",
+          slug: "sanctuary-expansion",
+          description:
+            "Help us build safe havens for injured cats that cannot return to the streets.",
+          goalCents: 750000,
+          imageUrl:
+            "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=800",
+          active: true,
+          sortOrder: 1,
+        },
+        {
+          name: "Community Education",
+          slug: "community-education",
+          description:
+            "Sponsor workshops teaching responsible pet stewardship and humane population control.",
+          goalCents: 250000,
+          imageUrl:
+            "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800",
+          active: true,
+          sortOrder: 2,
+        },
+      ];
+      for (const c of campaigns) await ctx.db.insert("campaigns", c);
     }
 
     if ((await ctx.db.query("rescueStories").collect()).length === 0) {

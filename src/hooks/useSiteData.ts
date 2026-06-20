@@ -18,6 +18,7 @@ import type {
   RescueStory,
   SiteSettings,
   Testimonial,
+  Campaign,
 } from "../types/documents";
 
 export function useSiteSettings() {
@@ -129,4 +130,8 @@ export function useFaq() {
 
 export function useRecentDonors() {
   return useQuery(api.donations.recentPublic) as RecentDonor[] | undefined;
+}
+
+export function useCampaigns() {
+  return useQuery(api.campaigns.list) as Campaign[] | undefined;
 }
