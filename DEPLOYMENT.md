@@ -2,7 +2,19 @@
 
 **GitHub repo:** https://github.com/m0nst3rz3r0/SaveCatAfrica
 
-## Overview
+## Live URLs
+
+| Service | URL |
+|---------|-----|
+| **Website** | https://savecat-africa.vercel.app |
+| **Admin** | https://savecat-africa.vercel.app/admin/login |
+| **Convex dashboard** | https://dashboard.convex.dev/d/wandering-iguana-544 |
+| **Convex API (prod)** | `https://wandering-iguana-544.convex.cloud` |
+| **Stripe webhook** | `https://wandering-iguana-544.convex.site/stripe-webhook` |
+
+Production database has been seeded. Admin credentials are set in the Convex dashboard (Production env vars).
+
+---
 
 | Service | Hosts |
 |---------|--------|
