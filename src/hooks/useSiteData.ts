@@ -6,6 +6,7 @@ import type {
   CrisisCard,
   Donation,
   DonationTier,
+  FaqItem,
   FooterLink,
   FundraisingStats,
   ImpactStat,
@@ -13,7 +14,10 @@ import type {
   Page,
   Partner,
   ProtectionPlan,
+  RecentDonor,
+  RescueStory,
   SiteSettings,
+  Testimonial,
 } from "../types/documents";
 
 export function useSiteSettings() {
@@ -109,4 +113,20 @@ export function useNewsletterSubscribers(token: string | null) {
 
 export function useSubscriberCount() {
   return useQuery(api.newsletter.subscriberCount) as number | undefined;
+}
+
+export function useStories() {
+  return useQuery(api.stories.list) as RescueStory[] | undefined;
+}
+
+export function useTestimonials() {
+  return useQuery(api.testimonials.list) as Testimonial[] | undefined;
+}
+
+export function useFaq() {
+  return useQuery(api.faq.list) as FaqItem[] | undefined;
+}
+
+export function useRecentDonors() {
+  return useQuery(api.donations.recentPublic) as RecentDonor[] | undefined;
 }

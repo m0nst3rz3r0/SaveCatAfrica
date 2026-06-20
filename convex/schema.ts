@@ -29,8 +29,19 @@ export default defineSchema({
     heroSubcopy: v.optional(v.string()),
     heroImageUrl: v.optional(v.string()),
     heroImageStorageId: v.optional(v.id("_storage")),
+    heroVideoUrl: v.optional(v.string()),
     donationImageUrl: v.optional(v.string()),
     donationImageStorageId: v.optional(v.id("_storage")),
+    trustStripText: v.optional(v.string()),
+    siteDescription: v.optional(v.string()),
+    analyticsId: v.optional(v.string()),
+    monthlyGivingEnabled: v.optional(v.boolean()),
+    showTrustStrip: v.optional(v.boolean()),
+    showStories: v.optional(v.boolean()),
+    showTestimonials: v.optional(v.boolean()),
+    showFaq: v.optional(v.boolean()),
+    showGallery: v.optional(v.boolean()),
+    showRecentDonors: v.optional(v.boolean()),
   }),
 
   impactStats: defineTable({
@@ -68,6 +79,7 @@ export default defineSchema({
     name: v.string(),
     url: v.optional(v.string()),
     logoStorageId: v.optional(v.id("_storage")),
+    logoUrl: v.optional(v.string()),
     sortOrder: v.number(),
   }).index("by_sort", ["sortOrder"]),
 
@@ -82,7 +94,59 @@ export default defineSchema({
     slug: v.string(),
     title: v.string(),
     body: v.string(),
+    coverImageUrl: v.optional(v.string()),
+    coverImageStorageId: v.optional(v.id("_storage")),
+    videoUrl: v.optional(v.string()),
   }).index("by_slug", ["slug"]),
+
+  rescueStories: defineTable({
+    catName: v.string(),
+    title: v.string(),
+    story: v.string(),
+    location: v.optional(v.string()),
+    amountNeededCents: v.optional(v.number()),
+    imageUrl: v.optional(v.string()),
+    imageStorageId: v.optional(v.id("_storage")),
+    featured: v.boolean(),
+    visible: v.boolean(),
+    sortOrder: v.number(),
+  }).index("by_sort", ["sortOrder"]),
+
+  testimonials: defineTable({
+    name: v.string(),
+    role: v.string(),
+    quote: v.string(),
+    imageUrl: v.optional(v.string()),
+    imageStorageId: v.optional(v.id("_storage")),
+    visible: v.boolean(),
+    sortOrder: v.number(),
+  }).index("by_sort", ["sortOrder"]),
+
+  faqItems: defineTable({
+    question: v.string(),
+    answer: v.string(),
+    visible: v.boolean(),
+    sortOrder: v.number(),
+  }).index("by_sort", ["sortOrder"]),
+
+  campaigns: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    goalCents: v.number(),
+    imageUrl: v.optional(v.string()),
+    imageStorageId: v.optional(v.id("_storage")),
+    deadline: v.optional(v.number()),
+    active: v.boolean(),
+    sortOrder: v.number(),
+  }).index("by_slug", ["slug"]),
+
+  mediaAssets: defineTable({
+    name: v.string(),
+    storageId: v.id("_storage"),
+    contentType: v.optional(v.string()),
+    createdAt: v.number(),
+  }).index("by_created", ["createdAt"]),
 
   donations: defineTable({
     stripeSessionId: v.string(),
@@ -93,7 +157,9 @@ export default defineSchema({
       v.literal("failed")
     ),
     donorEmail: v.optional(v.string()),
+    donorName: v.optional(v.string()),
     tierId: v.optional(v.id("donationTiers")),
+    isMonthly: v.optional(v.boolean()),
     createdAt: v.number(),
   })
     .index("by_session", ["stripeSessionId"])

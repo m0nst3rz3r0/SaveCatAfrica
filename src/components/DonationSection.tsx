@@ -11,6 +11,7 @@ import {
   useFundraisingStats,
   useSiteSettings,
 } from "../hooks/useSiteData";
+import { RecentDonors } from "./RecentDonors";
 
 export function DonationSection() {
   const settings = useSiteSettings();
@@ -24,7 +25,11 @@ export function DonationSection() {
     null
   );
   const [customAmount, setCustomAmount] = useState("");
+  const [isMonthly, setIsMonthly] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const monthlyEnabled = settings?.monthlyGivingEnabled !== false;
+  const showRecentDonors = settings?.showRecentDonors !== false;
 
   const selectedTier =
     tiers?.find((t) => t._id === selectedTierId) ?? defaultTier ?? null;
@@ -44,7 +49,8 @@ export function DonationSection() {
       const result = await createCheckout({
         amountCents,
         tierId: selectedTier?._id,
-        successUrl: `${base}/?donated=1#impact`,
+        isMonthly: monthlyEnabled && isMonthly,
+        successUrl: `${base}/thank-you`,
         cancelUrl: `${base}/#impact`,
       });
       window.location.href = result.url;
@@ -61,8 +67,7 @@ export function DonationSection() {
     settings?.donationImageUrl ??
     "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&q=80&w=2000";
 
-  const showProgress =
-    stats?.hasGoal && (stats.raisedCents > 0 || stats.supporterCount > 0);
+  const showProgress = stats?.hasGoal;
 
   return (
     <section id="impact" className="py-24 bg-white relative">
@@ -169,6 +174,7 @@ export function DonationSection() {
                       </div>
                       <span className="font-black text-white">
                         {formatCents(tier.amountCents)}
+                        {monthlyEnabled && isMonthly ? "/mo" : ""}
                       </span>
                     </button>
                   ))}
@@ -191,17 +197,37 @@ export function DonationSection() {
                   />
                 </div>
 
+                {monthlyEnabled && (
+                  <label className="flex items-center gap-3 mb-6 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isMonthly}
+                      onChange={(e) => setIsMonthly(e.target.checked)}
+                      className="w-4 h-4 rounded accent-terracotta"
+                    />
+                    <span className="text-sm text-white/90 font-semibold">
+                      Give monthly — sustain rescue operations year-round
+                    </span>
+                  </label>
+                )}
+
                 <button
                   type="button"
                   disabled={loading}
                   onClick={handleDonate}
                   className="w-full py-4 bg-white text-navy font-black rounded-xl text-center mb-8 hover:bg-canvas transition-colors uppercase tracking-widest text-sm disabled:opacity-60"
                 >
-                  {loading ? "Redirecting..." : "DONATE NOW"}
+                  {loading
+                    ? "Redirecting..."
+                    : isMonthly && monthlyEnabled
+                      ? "DONATE MONTHLY"
+                      : "DONATE NOW"}
                 </button>
 
+                {showRecentDonors && <RecentDonors />}
+
                 {showProgress && stats && (
-                  <div className="pt-8 border-t border-white/10">
+                  <div className="pt-8 border-t border-white/10 mt-8">
                     <div className="flex justify-between items-end">
                       <div>
                         <p className="text-[10px] uppercase tracking-widest text-[#A89689] mb-1">

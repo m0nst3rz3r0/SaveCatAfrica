@@ -7,6 +7,13 @@ import { useAdminToken } from "../lib/auth";
 const navItems = [
   { to: "/admin", label: "Overview", end: true },
   { to: "/admin/settings", label: "Site Settings" },
+  { to: "/admin/homepage", label: "Homepage" },
+  { to: "/admin/media", label: "Media" },
+  { to: "/admin/stories", label: "Stories" },
+  { to: "/admin/testimonials", label: "Testimonials" },
+  { to: "/admin/faq", label: "FAQ" },
+  { to: "/admin/campaigns", label: "Campaigns" },
+  { to: "/admin/footer-links", label: "Footer Links" },
   { to: "/admin/impact", label: "Impact Stats" },
   { to: "/admin/mission", label: "Mission Cards" },
   { to: "/admin/protection", label: "Protection Plans" },

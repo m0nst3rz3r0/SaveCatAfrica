@@ -339,6 +339,9 @@ export const createPage = mutation({
     slug: v.string(),
     title: v.string(),
     body: v.string(),
+    coverImageUrl: v.optional(v.string()),
+    coverImageStorageId: v.optional(v.id("_storage")),
+    videoUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);
@@ -354,6 +357,9 @@ export const updatePage = mutation({
     slug: v.string(),
     title: v.string(),
     body: v.string(),
+    coverImageUrl: v.optional(v.string()),
+    coverImageStorageId: v.optional(v.id("_storage")),
+    videoUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);

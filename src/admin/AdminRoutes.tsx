@@ -13,6 +13,13 @@ import { PagesPage } from "./pages/PagesPage";
 import { DonationsPage } from "./pages/DonationsPage";
 import { ContactsPage } from "./pages/ContactsPage";
 import { NewsletterPage } from "./pages/NewsletterPage";
+import { MediaPage } from "./pages/MediaPage";
+import { StoriesPage } from "./pages/StoriesPage";
+import { TestimonialsPage } from "./pages/TestimonialsPage";
+import { FaqPage } from "./pages/FaqPage";
+import { CampaignsPage } from "./pages/CampaignsPage";
+import { FooterLinksPage } from "./pages/FooterLinksPage";
+import { HomepagePage } from "./pages/HomepagePage";
 
 export function AdminRoutes() {
   return (
@@ -28,6 +35,13 @@ export function AdminRoutes() {
       >
         <Route index element={<DashboardPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="homepage" element={<HomepagePage />} />
+        <Route path="media" element={<MediaPage />} />
+        <Route path="stories" element={<StoriesPage />} />
+        <Route path="testimonials" element={<TestimonialsPage />} />
+        <Route path="faq" element={<FaqPage />} />
+        <Route path="campaigns" element={<CampaignsPage />} />
+        <Route path="footer-links" element={<FooterLinksPage />} />
         <Route path="impact" element={<ImpactStatsPage />} />
         <Route path="mission" element={<CrisisCardsPage />} />
         <Route path="protection" element={<ProtectionPlansPage />} />

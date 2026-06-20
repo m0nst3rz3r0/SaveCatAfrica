@@ -33,11 +33,14 @@ http.route({
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      const amountCents = session.amount_total ?? 0;
+      const amountCents = session.amount_total ?? session.amount_subtotal ?? 0;
+      const isMonthly = session.metadata?.isMonthly === "true";
       await ctx.runMutation(internal.donations.completeDonation, {
         stripeSessionId: session.id,
         donorEmail: session.customer_details?.email ?? undefined,
+        donorName: session.customer_details?.name ?? undefined,
         amountCents,
+        isMonthly,
       });
     }
 

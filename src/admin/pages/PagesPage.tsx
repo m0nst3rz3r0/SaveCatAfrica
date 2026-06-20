@@ -16,7 +16,7 @@ export function PagesPage() {
   const remove = useMutation(api.content.deletePage);
   const { showToast } = useToast();
 
-  const [form, setForm] = useState({ slug: "", title: "", body: "" });
+  const [form, setForm] = useState({ slug: "", title: "", body: "", coverImageUrl: "", videoUrl: "" });
   const [editId, setEditId] = useState<Id<"pages"> | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,7 +29,7 @@ export function PagesPage() {
         await create({ token, ...form });
       }
       showToast("Saved");
-      setForm({ slug: "", title: "", body: "" });
+      setForm({ slug: "", title: "", body: "", coverImageUrl: "", videoUrl: "" });
       setEditId(null);
     } catch {
       showToast("Failed", "error");
@@ -64,7 +64,7 @@ export function PagesPage() {
                 <Link to={`/p/${p.slug}`} className="text-sm text-terracotta hover:underline">/p/{p.slug}</Link>
               </div>
               <div className="flex gap-2">
-                <button className="text-terracotta font-bold text-sm" onClick={() => { setEditId(p._id); setForm({ slug: p.slug, title: p.title, body: p.body }); }}>Edit</button>
+                <button className="text-terracotta font-bold text-sm" onClick={() => { setEditId(p._id); setForm({ slug: p.slug, title: p.title, body: p.body, coverImageUrl: p.coverImageUrl ?? "", videoUrl: p.videoUrl ?? "" }); }}>Edit</button>
                 <button className="text-red-600 font-bold text-sm" onClick={async () => { if (token) { await remove({ token, id: p._id }); showToast("Deleted"); } }}>Delete</button>
               </div>
             </div>

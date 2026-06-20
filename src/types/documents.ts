@@ -27,7 +27,20 @@ export type SiteSettings = {
   heroHeadlineAccent?: string;
   heroSubcopy?: string;
   heroImageUrl?: string;
+  heroImageStorageId?: Id<"_storage">;
+  heroVideoUrl?: string;
   donationImageUrl?: string;
+  donationImageStorageId?: Id<"_storage">;
+  trustStripText?: string;
+  siteDescription?: string;
+  analyticsId?: string;
+  monthlyGivingEnabled?: boolean;
+  showTrustStrip?: boolean;
+  showStories?: boolean;
+  showTestimonials?: boolean;
+  showFaq?: boolean;
+  showGallery?: boolean;
+  showRecentDonors?: boolean;
 };
 
 export type ImpactStat = {
@@ -85,6 +98,48 @@ export type Page = {
   slug: string;
   title: string;
   body: string;
+  coverImageUrl?: string;
+  videoUrl?: string;
+};
+
+export type RescueStory = {
+  _id: Id<"rescueStories">;
+  catName: string;
+  title: string;
+  story: string;
+  location?: string;
+  amountNeededCents?: number;
+  imageUrl?: string;
+  imageStorageId?: Id<"_storage">;
+  featured: boolean;
+  visible: boolean;
+  sortOrder: number;
+};
+
+export type Testimonial = {
+  _id: Id<"testimonials">;
+  name: string;
+  role: string;
+  quote: string;
+  imageUrl?: string;
+  imageStorageId?: Id<"_storage">;
+  visible: boolean;
+  sortOrder: number;
+};
+
+export type FaqItem = {
+  _id: Id<"faqItems">;
+  question: string;
+  answer: string;
+  visible: boolean;
+  sortOrder: number;
+};
+
+export type RecentDonor = {
+  amountCents: number;
+  donorName: string;
+  createdAt: number;
+  isMonthly: boolean;
 };
 
 export type FundraisingStats = {

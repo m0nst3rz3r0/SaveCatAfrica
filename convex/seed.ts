@@ -37,6 +37,17 @@ export const run = internalMutation({
           "https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?auto=format&fit=crop&q=80&w=2000",
         donationImageUrl:
           "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&q=80&w=2000",
+        trustStripText:
+          "Secure Stripe checkout • Transparent impact • Registered nonprofit",
+        siteDescription:
+          "SaveCat Africa protects domestic cats across Africa through mobile clinics, rescue, and community education.",
+        monthlyGivingEnabled: true,
+        showTrustStrip: true,
+        showStories: true,
+        showTestimonials: true,
+        showFaq: true,
+        showGallery: true,
+        showRecentDonors: true,
       });
     }
 
@@ -225,6 +236,119 @@ export const run = internalMutation({
     if (adminCount === 0) {
       await ctx.db.insert("admins", {
         email: "admin@savecatafrica.org",
+      });
+    }
+
+    const settings = await ctx.db.query("siteSettings").first();
+    if (settings) {
+      await ctx.db.patch(settings._id, {
+        trustStripText:
+          "Secure Stripe checkout • Transparent impact • Registered nonprofit",
+        siteDescription:
+          "SaveCat Africa protects domestic cats across Africa through mobile clinics, rescue, and community education.",
+        monthlyGivingEnabled: true,
+        showTrustStrip: true,
+        showStories: true,
+        showTestimonials: true,
+        showFaq: true,
+        showGallery: true,
+        showRecentDonors: true,
+      });
+    }
+
+    if ((await ctx.db.query("rescueStories").collect()).length === 0) {
+      const stories = [
+        {
+          catName: "Malaika",
+          title: "From the streets to safety",
+          story:
+            "Malaika was found starving in Nairobi with a severe leg injury. Your donations funded her surgery and recovery. Today she lives in a foster home awaiting adoption.",
+          location: "Nairobi, Kenya",
+          amountNeededCents: 5000,
+          imageUrl:
+            "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800",
+          featured: true,
+          visible: true,
+          sortOrder: 0,
+        },
+        {
+          catName: "Simba",
+          title: "Vaccinated and thriving",
+          story:
+            "Simba received a full course of vaccinations through our mobile clinic program — protecting him and the community from rabies.",
+          location: "Kampala, Uganda",
+          amountNeededCents: 1500,
+          imageUrl:
+            "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=800",
+          featured: false,
+          visible: true,
+          sortOrder: 1,
+        },
+      ];
+      for (const s of stories) await ctx.db.insert("rescueStories", s);
+    }
+
+    if ((await ctx.db.query("testimonials").collect()).length === 0) {
+      const items = [
+        {
+          name: "Dr. Amara Okafor",
+          role: "Veterinary Partner, Lagos",
+          quote:
+            "SaveCat Africa brings medical care where no other organization goes. Every donation directly saves lives.",
+          visible: true,
+          sortOrder: 0,
+        },
+        {
+          name: "James M.",
+          role: "Monthly Supporter",
+          quote:
+            "Knowing my monthly gift feeds and vaccinates rescued cats gives me real peace of mind.",
+          visible: true,
+          sortOrder: 1,
+        },
+      ];
+      for (const t of items) await ctx.db.insert("testimonials", t);
+    }
+
+    if ((await ctx.db.query("faqItems").collect()).length === 0) {
+      const faqs = [
+        {
+          question: "Where does my donation go?",
+          answer:
+            "100% of program donations fund mobile clinics, rescue operations, food, and veterinary care. Administrative costs are kept minimal.",
+          visible: true,
+          sortOrder: 0,
+        },
+        {
+          question: "Is my payment secure?",
+          answer:
+            "Yes. All donations are processed through Stripe, a PCI-compliant payment provider used by millions of organizations worldwide.",
+          visible: true,
+          sortOrder: 1,
+        },
+        {
+          question: "Can I volunteer?",
+          answer:
+            "Absolutely. Contact us through the form below or email info@savecatafrica.org to learn about field and remote volunteer opportunities.",
+          visible: true,
+          sortOrder: 2,
+        },
+        {
+          question: "Can I give monthly?",
+          answer:
+            "Yes! Toggle 'Give monthly' in the donation widget. Monthly supporters are the backbone of our rescue operations.",
+          visible: true,
+          sortOrder: 3,
+        },
+      ];
+      for (const f of faqs) await ctx.db.insert("faqItems", f);
+    }
+
+    if ((await ctx.db.query("pages").collect()).find((p) => p.slug === "privacy") === undefined) {
+      await ctx.db.insert("pages", {
+        slug: "privacy",
+        title: "Privacy Policy",
+        body: "SaveCat Africa respects your privacy. We collect only the information needed to process donations and respond to inquiries. We never sell your data. Contact info@savecatafrica.org with any questions.",
       });
     }
 
